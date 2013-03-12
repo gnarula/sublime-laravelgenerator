@@ -1,0 +1,50 @@
+[
+    {
+        "caption": "Generate: Model",
+        "command": "generate",
+        "args": {
+            "generate": "model",
+            "fill_in": "modelName"
+        }
+    },
+    {
+        "caption": "Generate: Seed",
+        "command": "generate",
+        "args": {
+            "generate": "seed",
+            "fill_in": "tableName"
+        }
+    },
+    {
+        "caption": "Generate: Test",
+        "command": "generate",
+        "args": {
+            "generate": "test",
+            "fill_in": "fileName"
+        }
+    },
+    {
+        "caption": "Generate: View",
+        "command": "generate",
+        "args": {
+            "generate": "view",
+            "fill_in": "viewName"
+        }
+    },
+    {
+        "caption": "Generate: Migration",
+        "command": "generate",
+        "args": {
+            "generate": "migration",
+            "fill_in": "migrationName --fields=\"fields\""
+        }
+    },
+    {
+        "caption": "Generate: Resource",
+        "command": "generate",
+        "args": {
+            "generate": "resource",
+            "fill_in": "resourceName"
+        }
+    }
+]
