@@ -48,10 +48,10 @@ class GenerateCommand(sublime_plugin.WindowCommand):
             sublime.set_timeout(lambda: self.proc_status(proc), 200)
         else:
             output = proc.communicate()[0]
-            matches = re.findall(r'/app/\w+/.*[.]php', output)
-            if matches:
-                for match in matches:
-                    self.window.open_file('%s%s' % (self.PROJECT_PATH, match))
+            match = re.search(r'/app/\w+/.*[.]php', output)
+            if match:
+                if not self.command == 'resource':
+                    self.window.open_file('%s%s' % (self.PROJECT_PATH, match.group(0)))
                 sublime.status_message("%s generated successfully!" % self.command)
             else:
                 sublime.status_message("Oh snap! %s failed" % self.command_str)
