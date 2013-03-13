@@ -4,7 +4,7 @@
         "command": "generate",
         "args": {
             "generate": "model",
-            "fill_in": "modelName"
+            "fill_in": "Enter the name of the model"
         }
     },
     {
@@ -12,7 +12,7 @@
         "command": "generate",
         "args": {
             "generate": "seed",
-            "fill_in": "tableName"
+            "fill_in": "Enter the table name you're seeding"
         }
     },
     {
@@ -20,7 +20,7 @@
         "command": "generate",
         "args": {
             "generate": "test",
-            "fill_in": "fileName"
+            "fill_in": "Enter the file name for the test"
         }
     },
     {
@@ -28,7 +28,7 @@
         "command": "generate",
         "args": {
             "generate": "view",
-            "fill_in": "viewName"
+            "fill_in": "Enter the file name of the view"
         }
     },
     {
@@ -36,7 +36,7 @@
         "command": "generate",
         "args": {
             "generate": "migration",
-            "fill_in": "migrationName --fields=\"fields\""
+            "fill_in": "Enter the Migration Name"
         }
     },
     {
@@ -44,7 +44,7 @@
         "command": "generate",
         "args": {
             "generate": "resource",
-            "fill_in": "resourceName"
+            "fill_in": "Enter the singular name of the resource"
         }
     }
 ]

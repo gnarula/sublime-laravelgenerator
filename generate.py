@@ -8,7 +8,7 @@ import sublime_plugin
 class GenerateCommand(sublime_plugin.WindowCommand):
     def run(self, *args, **kwargs):
         self.command = kwargs.get('generate', None)
-        self.fill_in = kwargs.get('fill_in', '')
+        self.fill_in = kwargs.get('fill_in', 'Enter the resource name')
 
         try:
             # The first folder needs to be the Laravel Project
@@ -17,7 +17,7 @@ class GenerateCommand(sublime_plugin.WindowCommand):
             if os.path.isfile("%s/artisan" % self.PROJECT_PATH):
                 if self.command in ['model', 'seed', 'test', 'view', 'migration', 'resource']:
                     # call function to do the work
-                    self.window.show_input_panel('Enter the resource name with parameters if any', self.fill_in, self.call_artisan, None, None)
+                    self.window.show_input_panel(self.fill_in, '', self.call_artisan, None, None)
                 else:
                     sublime.status_message("Generator command not supported")
             else:
