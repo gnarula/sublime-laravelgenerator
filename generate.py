@@ -1,4 +1,5 @@
 import os
+import re
 import time
 import shlex
 import subprocess
@@ -39,14 +40,18 @@ class GenerateCommand(sublime_plugin.WindowCommand):
             self.command_str += '"%s"' % value
             print self.command_str
             args = shlex.split(str(self.command_str))
-            proc = subprocess.Popen(args, shell=False)
+            proc = subprocess.Popen(args, shell=False, stdout=subprocess.PIPE)
             self.proc_status(proc)
 
     def proc_status(self, proc):
         if proc.poll() is None:
             sublime.set_timeout(lambda: self.proc_status(proc), 200)
         else:
-            if proc.returncode == 0:
+            output = proc.communicate()[0]
+            matches = re.findall(r'/app/\w+/.*[.]php', output)
+            if matches:
+                for match in matches:
+                    self.window.open_file('%s%s' % (self.PROJECT_PATH, match))
                 sublime.status_message("%s generated successfully!" % self.command)
             else:
                 sublime.status_message("Oh snap! %s failed" % self.command_str)
