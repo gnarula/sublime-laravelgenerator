@@ -36,7 +36,9 @@
         "command": "generate",
         "args": {
             "generate": "migration",
-            "fill_in": "Enter the Migration Name"
+            "fill_in": "Enter the Migration Name",
+            "fields": true,
+            "fields_label": "Table fields in the column:type format (optional)"
         }
     },
     {
@@ -44,7 +46,9 @@
         "command": "generate",
         "args": {
             "generate": "resource",
-            "fill_in": "Enter the singular name of the resource"
+            "fill_in": "Enter the singular name of the resource",
+            "fields": true,
+            "fields_label": "Table fields in the column:type format (optional)"
         }
     }
 ]
