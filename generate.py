@@ -49,4 +49,4 @@ class GenerateCommand(sublime_plugin.WindowCommand):
             if proc.returncode == 0:
                 sublime.status_message("%s generated successfully!" % self.command)
             else:
-                sublime.status_message("Oh snap! %s failed" % command_str)
+                sublime.status_message("Oh snap! %s failed" % self.command_str)
