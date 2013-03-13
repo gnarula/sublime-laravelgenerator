@@ -1,6 +1,6 @@
 [
     {
-        "caption": "Generate: Model",
+        "caption": "Laravel Generate: Model",
         "command": "generate",
         "args": {
             "generate": "model",
@@ -8,7 +8,7 @@
         }
     },
     {
-        "caption": "Generate: Seed",
+        "caption": "Laravel Generate: Seed",
         "command": "generate",
         "args": {
             "generate": "seed",
@@ -16,7 +16,7 @@
         }
     },
     {
-        "caption": "Generate: Test",
+        "caption": "Laravel Generate: Test",
         "command": "generate",
         "args": {
             "generate": "test",
@@ -24,7 +24,7 @@
         }
     },
     {
-        "caption": "Generate: View",
+        "caption": "Laravel Generate: View",
         "command": "generate",
         "args": {
             "generate": "view",
@@ -32,7 +32,7 @@
         }
     },
     {
-        "caption": "Generate: Migration",
+        "caption": "Laravel Generate: Migration",
         "command": "generate",
         "args": {
             "generate": "migration",
@@ -42,7 +42,7 @@
         }
     },
     {
-        "caption": "Generate: Resource",
+        "caption": "Laravel Generate: Resource",
         "command": "generate",
         "args": {
             "generate": "resource",
