@@ -40,8 +40,11 @@ class GenerateCommand(sublime_plugin.WindowCommand):
             self.command_str += '"%s"' % value
             print self.command_str
             args = shlex.split(str(self.command_str))
-            proc = subprocess.Popen(args, shell=False, stdout=subprocess.PIPE)
-            self.proc_status(proc)
+            try:
+                proc = subprocess.Popen(args, shell=False, stdout=subprocess.PIPE)
+                self.proc_status(proc)
+            except IOError:
+                sublime.status_message('IOError - command aborted')
 
     def proc_status(self, proc):
         if proc.poll() is None:
@@ -55,3 +58,40 @@ class GenerateCommand(sublime_plugin.WindowCommand):
                 sublime.status_message("%s generated successfully!" % self.command)
             else:
                 sublime.status_message("Oh snap! %s failed" % self.command_str)
+
+class ArtisanCommand(sublime_plugin.WindowCommand):
+    def run(self, *args, **kwargs):
+        self.window.show_input_panel('Enter an artisan command', '', self.call_artisan, None, None)
+
+    def call_artisan(self, command):
+        try:
+            self.PROJECT_PATH = self.window.folders()[0]
+            self.command_str = 'php %s/artisan %s' % (self.PROJECT_PATH, command)
+
+            if command:
+                try:
+                    args = shlex.split(str(self.command_str))
+                    proc = subprocess.Popen(args, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    self.proc_status(proc, command)
+                except IOError:
+                    sublime.status_message('IOError - command aborted')
+            else:
+                sublime.status_message('Command not set')
+        except IndexError:
+            sublime.status_message('Please open a Laravel Project')
+
+    def proc_status(self, proc, command):
+        if proc.poll() is None:
+            sublime.set_timeout(lambda: self.proc_status(proc, command), 200)
+        else:
+            out, err = proc.communicate()
+            if not err:
+                sublime.status_message('artisan %s executed successfully' % command)
+            else:
+                new_file = sublime.active_window().new_file()
+                new_file.run_command('artisan_error', {'insert': err })
+                sublime.status_message('artisan %s failed' % command)
+
+class ArtisanErrorCommand(sublime_plugin.TextCommand):
+    def run(self, edit, insert):
+        self.view.insert(edit, 0, insert)

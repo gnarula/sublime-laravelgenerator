@@ -50,5 +50,9 @@
             "fields": true,
             "fields_label": "Table fields in the column:type format (optional)"
         }
+    },
+    {
+        "caption": "Laravel Artisan Command",
+        "command": "artisan"
     }
 ]
