@@ -25,10 +25,8 @@ class GenerateCommand(sublime_plugin.WindowCommand):
                 else:
                     sublime.status_message("Generator command not supported")
             else:
-                print "Artisan not found"
                 sublime.status_message("Artisan not found")
         except IndexError:
-            print "Please open a Laravel Project"
             sublime.status_message("Please open a Laravel Project")
 
     def call_artisan(self, value=''):
@@ -38,7 +36,6 @@ class GenerateCommand(sublime_plugin.WindowCommand):
             self.window.show_input_panel(self.fields_label, '', self.call_artisan, None, None)
         else:
             self.command_str += '"%s"' % value
-            print self.command_str
             args = shlex.split(str(self.command_str))
             try:
                 proc = subprocess.Popen(args, shell=False, stdout=subprocess.PIPE)
@@ -84,7 +81,7 @@ class ArtisanCommand(sublime_plugin.WindowCommand):
         if proc.poll() is None:
             sublime.set_timeout(lambda: self.proc_status(proc, command), 200)
         else:
-            out, err = proc.communicate()
+            err = str(proc.communicate()[1])
             if not err:
                 sublime.status_message('artisan %s executed successfully' % command)
             else:
