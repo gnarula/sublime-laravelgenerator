@@ -97,8 +97,10 @@ class ArtisanCommand(sublime_plugin.WindowCommand):
             if not err:
                 sublime.status_message('artisan %s executed successfully' % command)
             else:
-                new_file = sublime.active_window().new_file()
-                new_file.run_command('artisan_error', {'insert': err })
+                panel_name = 'artisan_output'
+                panel = self.window.get_output_panel(panel_name)
+                panel.run_command('artisan_error', {'insert': err })
+                self.window.run_command('show_panel', {'panel': 'output.' + panel_name})
                 sublime.status_message('artisan %s failed' % command)
 
 class ArtisanErrorCommand(sublime_plugin.TextCommand):
