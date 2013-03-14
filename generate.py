@@ -81,7 +81,7 @@ class ArtisanCommand(sublime_plugin.WindowCommand):
         if proc.poll() is None:
             sublime.set_timeout(lambda: self.proc_status(proc, command), 200)
         else:
-            err = str(proc.communicate()[1])
+            err = proc.communicate()[1].decode('utf-8')
             if not err:
                 sublime.status_message('artisan %s executed successfully' % command)
             else:
