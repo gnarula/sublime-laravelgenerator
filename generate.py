@@ -7,6 +7,12 @@ import sublime
 import sublime_plugin
 
 class GenerateCommand(sublime_plugin.WindowCommand):
+    def __init__(self, *args, **kwargs):
+        super(GenerateCommand, self).__init__(*args, **kwargs)
+
+        settings = sublime.load_settings('laravelgenerator.sublime-settings')
+        self.php_path = settings.get('php_path', 'php')
+
     def run(self, *args, **kwargs):
         self.command = kwargs.get('generate', None)
         self.fill_in = kwargs.get('fill_in', 'Enter the resource name')
@@ -16,7 +22,7 @@ class GenerateCommand(sublime_plugin.WindowCommand):
         try:
             # The first folder needs to be the Laravel Project
             self.PROJECT_PATH = self.window.folders()[0]
-            self.command_str = 'php %s/artisan generate:%s ' % (self.PROJECT_PATH, self.command)
+            self.command_str = '%s %s/artisan generate:%s ' % (self.php_path, self.PROJECT_PATH, self.command)
 
             if os.path.isfile("%s/artisan" % self.PROJECT_PATH):
                 if self.command in ['model', 'seed', 'test', 'view', 'migration', 'resource']:
@@ -47,7 +53,7 @@ class GenerateCommand(sublime_plugin.WindowCommand):
         if proc.poll() is None:
             sublime.set_timeout(lambda: self.proc_status(proc), 200)
         else:
-            output = proc.communicate()[0]
+            output = proc.communicate()[0].decode('utf-8')
             match = re.search(r'/app/\w+/.*[.]php', output)
             if match:
                 if not self.command == 'resource':
@@ -57,13 +63,19 @@ class GenerateCommand(sublime_plugin.WindowCommand):
                 sublime.status_message("Oh snap! %s failed" % self.command_str)
 
 class ArtisanCommand(sublime_plugin.WindowCommand):
+    def __init__(self, *args, **kwargs):
+        super(ArtisanCommand, self).__init__(*args, **kwargs)
+
+        settings = sublime.load_settings('laravelgenerator.sublime-settings')
+        self.php_path = settings.get('php_path', 'php')
+
     def run(self, *args, **kwargs):
         self.window.show_input_panel('Enter an artisan command', '', self.call_artisan, None, None)
 
     def call_artisan(self, command):
         try:
             self.PROJECT_PATH = self.window.folders()[0]
-            self.command_str = 'php %s/artisan %s' % (self.PROJECT_PATH, command)
+            self.command_str = '%s %s/artisan %s' % (self.php_path, self.PROJECT_PATH, command)
 
             if command:
                 try:
