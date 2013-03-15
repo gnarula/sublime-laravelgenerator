@@ -22,9 +22,9 @@ class GenerateCommand(sublime_plugin.WindowCommand):
         try:
             # The first folder needs to be the Laravel Project
             self.PROJECT_PATH = self.window.folders()[0]
-            self.command_str = '%s %s/artisan generate:%s ' % (self.php_path, self.PROJECT_PATH, self.command)
+            self.command_str = '%s %s generate:%s ' % (self.php_path, os.path.join(self.PROJECT_PATH, 'artisan'), self.command)
 
-            if os.path.isfile("%s/artisan" % self.PROJECT_PATH):
+            if os.path.isfile("%s" % os.path.join(self.PROJECT_PATH, 'artisan')):
                 if self.command in ['model', 'seed', 'test', 'view', 'migration', 'resource']:
                     # call function to do the work
                     self.window.show_input_panel(self.fill_in, '', self.call_artisan, None, None)
@@ -75,7 +75,7 @@ class ArtisanCommand(sublime_plugin.WindowCommand):
     def call_artisan(self, command):
         try:
             self.PROJECT_PATH = self.window.folders()[0]
-            self.command_str = '%s %s/artisan %s' % (self.php_path, self.PROJECT_PATH, command)
+            self.command_str = '%s %s %s' % (self.php_path, os.path.join(self.PROJECT_PATH, 'artisan'), command)
 
             if command:
                 try:
