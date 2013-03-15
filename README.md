@@ -8,7 +8,10 @@ Way](https://github.com/JeffreyWay) directly within Sublime Text.
 
 * Install the  [Laravel 4
 generator commands](https://github.com/JeffreyWay/Laravel-4-Generators) through Composer.
-* Install the ST plugin through Package Control: *Sublime Laravel Generator* 
+* Install the ST plugin through Package Control: *Sublime Laravel Generator*
+* If you are on Windows or your php is not in PATH, please specify the path to
+  the php executable in `laravelgenerator.sublime-settings`. To do so, copy `laravelgenerator.sublime-settings` from this
+plugin to `<Packages_Directory>/Users/` and make the edits to that file.
 
 ## Usage
 
@@ -24,6 +27,11 @@ generator commands](https://github.com/JeffreyWay/Laravel-4-Generators) through 
 The plugin is quite extensible. Interested users can extend the plugin for more
 artisan commands by adding the appropriate entries in
 `Default.sublime-commands`.
+
+## Credits
+
+* [Jeffrey Way](https://github.com/JeffreyWay): for the idea and testing this
+  plugin throughout the development.
 
 ***
 
