@@ -41,8 +41,12 @@ class GenerateCommand(sublime_plugin.WindowCommand):
             self.accept_fields = False
             self.window.show_input_panel(self.fields_label, '', self.call_artisan, None, None)
         else:
-            self.command_str += '"%s"' % value
-            args = shlex.split(str(self.command_str))
+            if '--fields=' in self.command_str:
+                self.command_str += '"%s"' % value
+            else:
+                self.command_str += '%s' % value
+            posix = os.name == 'posix'
+            args = shlex.split(str(self.command_str), posix=posix)
             try:
                 proc = subprocess.Popen(args, shell=False, stdout=subprocess.PIPE)
                 self.proc_status(proc)
@@ -79,7 +83,8 @@ class ArtisanCommand(sublime_plugin.WindowCommand):
 
             if command:
                 try:
-                    args = shlex.split(str(self.command_str))
+                    posix = os.name == 'posix'
+                    args = shlex.split(str(self.command_str), posix=posix)
                     proc = subprocess.Popen(args, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                     self.proc_status(proc, command)
                 except IOError:
