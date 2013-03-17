@@ -22,7 +22,7 @@ class GenerateCommand(sublime_plugin.WindowCommand):
         try:
             # The first folder needs to be the Laravel Project
             self.PROJECT_PATH = self.window.folders()[0]
-            self.command_str = '%s %s generate:%s ' % (self.php_path, os.path.join(self.PROJECT_PATH, 'artisan'), self.command)
+            self.args = [self.php_path, os.path.join(self.PROJECT_PATH, 'artisan'), 'generate:%s' % self.command]
 
             if os.path.isfile("%s" % os.path.join(self.PROJECT_PATH, 'artisan')):
                 if self.command in ['model', 'seed', 'test', 'view', 'migration', 'resource']:
@@ -37,18 +37,18 @@ class GenerateCommand(sublime_plugin.WindowCommand):
 
     def call_artisan(self, value=''):
         if self.accept_fields:
-            self.command_str += '%s --fields=' % value
+            self.args.extend([value, '--fields='])
             self.accept_fields = False
             self.window.show_input_panel(self.fields_label, '', self.call_artisan, None, None)
         else:
-            if '--fields=' in self.command_str:
-                self.command_str += '"%s"' % value
+            if self.args[-1] == '--fields=':
+                self.args[-1] += '%s' % value
             else:
-                self.command_str += '%s' % value
-            posix = os.name == 'posix'
-            args = shlex.split(str(self.command_str), posix=posix)
+                self.args.append(value)
+            if os.name != 'posix':
+                self.args = subprocess.list2cmdline(self.args)
             try:
-                proc = subprocess.Popen(args, shell=False, stdout=subprocess.PIPE)
+                proc = subprocess.Popen(self.args, shell=False, stdout=subprocess.PIPE)
                 self.proc_status(proc)
             except IOError:
                 sublime.status_message('IOError - command aborted')
@@ -64,7 +64,7 @@ class GenerateCommand(sublime_plugin.WindowCommand):
                     self.window.open_file('%s%s' % (self.PROJECT_PATH, match.group(0)))
                 sublime.status_message("%s generated successfully!" % self.command)
             else:
-                sublime.status_message("Oh snap! %s failed" % self.command_str)
+                sublime.status_message("Oh snap! generate:%s failed" % self.command)
 
 class ArtisanCommand(sublime_plugin.WindowCommand):
     def __init__(self, *args, **kwargs):
@@ -79,13 +79,13 @@ class ArtisanCommand(sublime_plugin.WindowCommand):
     def call_artisan(self, command):
         try:
             self.PROJECT_PATH = self.window.folders()[0]
-            self.command_str = '%s %s %s' % (self.php_path, os.path.join(self.PROJECT_PATH, 'artisan'), command)
+            self.args = '%s %s %s' % (self.php_path, os.path.join(self.PROJECT_PATH, 'artisan'), command)
+            if os.name == 'posix':
+                self.args = shlex.split(str(self.args))
 
             if command:
                 try:
-                    posix = os.name == 'posix'
-                    args = shlex.split(str(self.command_str), posix=posix)
-                    proc = subprocess.Popen(args, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    proc = subprocess.Popen(self.args, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                     self.proc_status(proc, command)
                 except IOError:
                     sublime.status_message('IOError - command aborted')
