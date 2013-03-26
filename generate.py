@@ -48,7 +48,7 @@ class GenerateCommand(sublime_plugin.WindowCommand):
             if os.name != 'posix':
                 self.args = subprocess.list2cmdline(self.args)
             try:
-                proc = subprocess.Popen(self.args, shell=False, stdout=subprocess.PIPE)
+                proc = subprocess.Popen(self.args, cwd=self.PROJECT_PATH, shell=False, stdout=subprocess.PIPE)
                 self.proc_status(proc)
             except IOError:
                 sublime.status_message('IOError - command aborted')
