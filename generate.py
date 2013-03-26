@@ -98,16 +98,19 @@ class ArtisanCommand(sublime_plugin.WindowCommand):
         if proc.poll() is None:
             sublime.set_timeout(lambda: self.proc_status(proc, command), 200)
         else:
-            err = proc.communicate()[1].decode('utf-8')
-            if not err:
+            result = [x.decode('utf-8') for x in proc.communicate()]
+            panel_name = 'artisan_output'
+            panel = self.window.get_output_panel(panel_name)
+            if not result[1]:
+                if command == 'routes':
+                    panel.run_command('artisan_output', {'insert': result[0]})
+                    self.window.run_command('show_panel', {'panel': 'output.' + panel_name})
                 sublime.status_message('artisan %s executed successfully' % command)
             else:
-                panel_name = 'artisan_output'
-                panel = self.window.get_output_panel(panel_name)
-                panel.run_command('artisan_error', {'insert': err })
+                panel.run_command('artisan_output', {'insert': result[1]})
                 self.window.run_command('show_panel', {'panel': 'output.' + panel_name})
                 sublime.status_message('artisan %s failed' % command)
 
-class ArtisanErrorCommand(sublime_plugin.TextCommand):
+class ArtisanOutputCommand(sublime_plugin.TextCommand):
     def run(self, edit, insert):
         self.view.insert(edit, 0, insert)
