@@ -52,6 +52,16 @@
         }
     },
     {
+        "caption": "Laravel Generate: Scaffold",
+        "command": "generate",
+        "args": {
+            "generate": "scaffold",
+            "fill_in": "Enter the singular name of the resource",
+            "fields": true,
+            "fields_label": "Table fields in the column:type format (optional)"
+        }
+    },
+    {
         "caption": "Laravel Artisan Command",
         "command": "artisan"
     }
