@@ -64,7 +64,7 @@ class GenerateCommand(sublime_plugin.WindowCommand):
                     self.window.open_file('%s%s' % (self.PROJECT_PATH, match.group(0)))
                 sublime.status_message("%s generated successfully!" % self.command)
             else:
-                sublime.status_message("Oh snap! generate:%s failed" % self.command)
+                sublime.status_message("Oh snap! generate:%s failed - %s" % (self.command, output))
 
 class ArtisanCommand(sublime_plugin.WindowCommand):
     def __init__(self, *args, **kwargs):
