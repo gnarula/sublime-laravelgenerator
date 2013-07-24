@@ -25,7 +25,7 @@ class GenerateCommand(sublime_plugin.WindowCommand):
             self.args = [self.php_path, os.path.join(self.PROJECT_PATH, 'artisan'), 'generate:%s' % self.command]
 
             if os.path.isfile("%s" % os.path.join(self.PROJECT_PATH, 'artisan')):
-                if self.command in ['model', 'seed', 'test', 'view', 'migration', 'resource']:
+                if self.command in ['model', 'seed', 'test', 'view', 'migration', 'resource', 'scaffold']:
                     # call function to do the work
                     self.window.show_input_panel(self.fill_in, '', self.call_artisan, None, None)
                 else:
