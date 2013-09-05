@@ -28,7 +28,9 @@
         "command": "generate",
         "args": {
             "generate": "view",
-            "fill_in": "Enter the file name of the view"
+            "fill_in": "Enter the file name of the view",
+            "path": true,
+            "path_label": "Specify path relative to 'app/views/' (optional)"
         }
     },
     {
