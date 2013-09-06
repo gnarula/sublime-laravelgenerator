@@ -18,6 +18,8 @@ class GenerateCommand(sublime_plugin.WindowCommand):
         self.fill_in = kwargs.get('fill_in', 'Enter the resource name')
         self.accept_fields = kwargs.get('fields', False)
         self.fields_label = kwargs.get('fields_label', 'Enter the fields')
+        self.accept_path = kwargs.get('path', False)
+        self.path_label = kwargs.get('path_label', 'Enter the path')
 
         try:
             # The first folder needs to be the Laravel Project
@@ -40,8 +42,14 @@ class GenerateCommand(sublime_plugin.WindowCommand):
             self.args.extend([value, '--fields='])
             self.accept_fields = False
             self.window.show_input_panel(self.fields_label, '', self.call_artisan, None, None)
+        elif self.accept_path and self.command == 'view':
+            self.args.extend([value, '--path=%s' % os.path.join(self.PROJECT_PATH, 'app/views/')])
+            self.accept_path = False
+            self.window.show_input_panel(self.path_label, '', self.call_artisan, None, None)
         else:
             if self.args[-1] == '--fields=':
+                self.args[-1] += '%s' % value
+            elif self.args[-1] == '--path=%s' % os.path.join(self.PROJECT_PATH, 'app/views/'):
                 self.args[-1] += '%s' % value
             else:
                 self.args.append(value)
